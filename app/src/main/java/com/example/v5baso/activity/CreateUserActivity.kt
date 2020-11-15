@@ -1,8 +1,8 @@
 package com.example.v5baso.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +11,6 @@ import com.example.v5baso.model.request.CreateUserRequest
 import com.example.v5baso.presenter.UserPresenter
 import com.example.v5baso.presenter.UserPresenterImpl
 import com.example.v5baso.view.UserView
-import com.google.android.material.textfield.TextInputLayout
 
 
 class CreateUserActivity : AppCompatActivity(), UserView {
@@ -43,7 +42,8 @@ class CreateUserActivity : AppCompatActivity(), UserView {
         }
     }
 
-    fun initUI() {
+    @SuppressLint("SetTextI18n")
+    private fun initUI() {
 
         btn_click_me = findViewById(R.id.btnLogin)
         text1 = findViewById(R.id.textView3)
@@ -76,8 +76,6 @@ class CreateUserActivity : AppCompatActivity(), UserView {
     }
 
     override fun result(result: String?) {
-        Log.e("response", result.toString())
-
         val sharedPreferences = getSharedPreferences(
             "MySharedPref",
             MODE_PRIVATE
@@ -85,7 +83,7 @@ class CreateUserActivity : AppCompatActivity(), UserView {
         val myEdit = sharedPreferences.edit()
         myEdit.putBoolean("login", true)
 
-        myEdit.commit()
+        myEdit.apply()
         progressBar.visibility = View.INVISIBLE
         loginSucces()
         onDestroy()
