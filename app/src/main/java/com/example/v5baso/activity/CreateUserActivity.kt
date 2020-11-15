@@ -4,8 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.v5baso.R
 import com.example.v5baso.model.request.CreateUserRequest
@@ -14,52 +13,93 @@ import com.example.v5baso.presenter.UserPresenterImpl
 import com.example.v5baso.view.UserView
 import com.google.android.material.textfield.TextInputLayout
 
+
 class CreateUserActivity : AppCompatActivity(), UserView {
 
     var userPresenter: UserPresenter? = null
-    private lateinit var user: TextInputLayout
-    private lateinit var pass: TextInputLayout
+    private lateinit var user: EditText
+    private lateinit var pass: EditText
+    private lateinit var email: EditText
+    private lateinit var lastName: EditText
     private lateinit var text1: TextView
     lateinit var btn_click_me: Button
+    lateinit var progressBar: ProgressBar
+    var logginGreat: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login_activity)
+        setContentView(R.layout.create_user_activity)
         userPresenter = UserPresenterImpl(this)
-        initUI()
+        val sh = getSharedPreferences(
+            "MySharedPref",
+            MODE_PRIVATE
+        )
+
+        logginGreat = sh.getBoolean("login",false)
+        if (logginGreat){
+            loginSucces()
+        }else {
+            initUI()
+        }
     }
 
     fun initUI() {
 
         btn_click_me = findViewById(R.id.btnLogin)
-        text1= findViewById(R.id.textView3)
-        user = findViewById(R.id.tilEmail)
-        pass = findViewById(R.id.tilPass)
+        text1 = findViewById(R.id.textView3)
+        user = findViewById(R.id.nombre)
+        pass = findViewById(R.id.password)
+        lastName = findViewById(R.id.apellido)
+        email = findViewById(R.id.correo)
+        progressBar = findViewById(R.id.progress_circular)
 
         text1.text = "Crear una cuenta"
         btn_click_me.text = "Crear Usuario"
         btn_click_me.setOnClickListener {
-            userPresenter!!.createUser(
-                CreateUserRequest(
-                    "test@gft.com",
-                    "Arturo",
-                    "Rodriguez",
-                    "mypassword"
+            if (email.text.isNotEmpty()
+                && user.text.isNotEmpty()
+                && lastName.text.isNotEmpty()
+                && pass.text.isNotEmpty()){
+                progressBar.visibility = View.VISIBLE
+                userPresenter!!.createUser(
+                    CreateUserRequest(
+                        email.text.toString(),
+                        user.text.toString(),
+                        lastName.text.toString(),
+                        pass.text.toString()
+                    )
                 )
-            )
-
+            }else {
+                Toast.makeText(this, "Llena todos los campos", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
     override fun result(result: String?) {
         Log.e("response", result.toString())
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+
+        val sharedPreferences = getSharedPreferences(
+            "MySharedPref",
+            MODE_PRIVATE
+        )
+        val myEdit = sharedPreferences.edit()
+        myEdit.putBoolean("login", true)
+
+        myEdit.commit()
+        progressBar.visibility = View.INVISIBLE
+        loginSucces()
         onDestroy()
     }
 
     override fun createUser() {
-        TODO("Not yet implemented")
+        Toast.makeText(this, "No fue exitoso intente nuevamente", Toast.LENGTH_LONG).show()
+    }
+
+
+    private fun loginSucces() {
+        Toast.makeText(this, "exitoso la creación de usuario", Toast.LENGTH_LONG).show()
+        val intent = Intent(this, LogInActivity::class.java)
+        startActivity(intent)
     }
 
 }
