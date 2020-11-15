@@ -5,7 +5,7 @@ import com.example.v5baso.interactor.UserInteractorImpl
 import com.example.v5baso.model.request.CreateUserRequest
 import com.example.v5baso.view.UserView
 
-class UserPresenterImpl(view: UserView?): UserPresenter {
+class UserPresenterImpl(view: UserView?): CreateUserPresenter {
 
     private var view: UserView? = view
     private var interactor: UserInteractor? = null
@@ -19,7 +19,9 @@ class UserPresenterImpl(view: UserView?): UserPresenter {
     }
 
     override fun invalidOperation() {
-        TODO("Not yet implemented")
+        if (view != null){
+            view!!.invalidateOperation()
+        }
     }
 
     override fun createUser(request: CreateUserRequest) {
@@ -29,7 +31,4 @@ class UserPresenterImpl(view: UserView?): UserPresenter {
         }
     }
 
-    override fun LogInUser(num1: Int, num2: Int) {
-        TODO("Not yet implemented")
-    }
 }

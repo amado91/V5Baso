@@ -1,17 +1,16 @@
 package com.example.v5baso.interactor
 
-import android.util.Log
 import com.example.v5baso.model.request.CreateUserRequest
 import com.example.v5baso.model.response.CreateUserResponse
-import com.example.v5baso.presenter.UserPresenter
+import com.example.v5baso.presenter.CreateUserPresenter
 import com.example.v5baso.service.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class UserInteractorImpl(userPresenter: UserPresenter) : UserInteractor {
+class UserInteractorImpl(userPresenter: CreateUserPresenter) : UserInteractor {
 
-    private val presenter: UserPresenter? = userPresenter
+    private val presenter: CreateUserPresenter? = userPresenter
 
     override fun getUserInteractor(userRequest: CreateUserRequest) {
         val compositeDisposable = CompositeDisposable()

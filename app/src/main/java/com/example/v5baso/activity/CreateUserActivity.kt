@@ -8,14 +8,14 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.v5baso.R
 import com.example.v5baso.model.request.CreateUserRequest
-import com.example.v5baso.presenter.UserPresenter
+import com.example.v5baso.presenter.CreateUserPresenter
 import com.example.v5baso.presenter.UserPresenterImpl
 import com.example.v5baso.view.UserView
 
 
 class CreateUserActivity : AppCompatActivity(), UserView {
 
-    var userPresenter: UserPresenter? = null
+    var userPresenter: CreateUserPresenter? = null
     private lateinit var user: EditText
     private lateinit var pass: EditText
     private lateinit var email: EditText
@@ -37,6 +37,7 @@ class CreateUserActivity : AppCompatActivity(), UserView {
         logginGreat = sh.getBoolean("login",false)
         if (logginGreat){
             loginSucces()
+            onDestroy()
         }else {
             initUI()
         }
@@ -76,6 +77,7 @@ class CreateUserActivity : AppCompatActivity(), UserView {
     }
 
     override fun result(result: String?) {
+        Toast.makeText(this, result, Toast.LENGTH_LONG).show()
         val sharedPreferences = getSharedPreferences(
             "MySharedPref",
             MODE_PRIVATE
@@ -89,15 +91,16 @@ class CreateUserActivity : AppCompatActivity(), UserView {
         onDestroy()
     }
 
-    override fun createUser() {
+    override fun invalidateOperation() {
+        progressBar.visibility = View.INVISIBLE
         Toast.makeText(this, "No fue exitoso intente nuevamente", Toast.LENGTH_LONG).show()
     }
 
 
     private fun loginSucces() {
-        Toast.makeText(this, "exitoso la creación de usuario", Toast.LENGTH_LONG).show()
         val intent = Intent(this, LogInActivity::class.java)
         startActivity(intent)
+       // onDestroy()
     }
 
 }
