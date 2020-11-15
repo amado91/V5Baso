@@ -82,4 +82,9 @@ class LogInActivity : AppCompatActivity(), UserView {
         progressBar.visibility = View.INVISIBLE
         makeText(this, "Login Invalido", Toast.LENGTH_LONG).show()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        onDestroy()
+    }
 }
