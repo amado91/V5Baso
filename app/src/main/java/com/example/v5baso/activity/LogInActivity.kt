@@ -18,12 +18,16 @@ import org.apache.commons.codec.binary.Base64
 
 class LogInActivity : AppCompatActivity(), UserView {
 
+
+
     var loginUserPresenter: LoginUserPresenter? = null
+    var response: BodyUserResponse? = null
     private lateinit var user: EditText
     private lateinit var pass: EditText
     lateinit var btn_click_me: Button
     private lateinit var text1: TextView
     lateinit var progressBar: ProgressBar
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,10 +74,10 @@ class LogInActivity : AppCompatActivity(), UserView {
         println("JWT Body : $body")
         val gson = Gson()
 
-        val response: BodyUserResponse = gson.fromJson(body, BodyUserResponse::class.java)
+        response = gson.fromJson(body, BodyUserResponse::class.java)
         progressBar.visibility = View.INVISIBLE
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("userName",response.firstname+" "+response.lastname)
+        intent.putExtra("userName",response!!.firstname+" "+response!!.lastname)
         intent.putExtra("token", result)
         startActivity(intent)
     }

@@ -5,7 +5,7 @@ import com.example.v5baso.interactor.UserInteractorImpl
 import com.example.v5baso.model.request.CreateUserRequest
 import com.example.v5baso.view.UserView
 
-class UserPresenterImpl(view: UserView?): CreateUserPresenter {
+class CreateUserPresenterImpl(view: UserView?): CreateUserPresenter {
 
     private var view: UserView? = view
     private var interactor: UserInteractor? = null

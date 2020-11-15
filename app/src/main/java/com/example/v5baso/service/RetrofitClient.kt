@@ -9,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
 
     var BASE_URL = "https://mighty-refuge-81707.herokuapp.com/api/auth/user/"
+    var BASER_URL_CATALG = "https://mighty-refuge-81707.herokuapp.com/api/accounts/"
 
     private val client = OkHttpClient
         .Builder()
@@ -22,7 +23,19 @@ object RetrofitClient {
         .build()
         .create(WebService::class.java)
 
+    private val retrofitCatalog = Retrofit.Builder()
+        .baseUrl(BASER_URL_CATALG)
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(client)
+        .build()
+        .create(WebService::class.java)
+
     fun buildService(): WebService {
         return retrofit
+    }
+
+    fun buildService2(): WebService {
+        return retrofitCatalog
     }
 }

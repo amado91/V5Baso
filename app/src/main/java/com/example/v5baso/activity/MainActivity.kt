@@ -8,35 +8,43 @@ import android.location.*
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.v5baso.R
+import com.example.v5baso.presenter.CreateCatalogPresenter
+import com.example.v5baso.presenter.CreateCatalogPresenterImpl
+import com.example.v5baso.view.UserView
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), UserView {
 
+    var createCatalogPresenter: CreateCatalogPresenter? = null
     private var locationManager : LocationManager? = null
     private var latitud: Double? = null
     private var longitud: Double? = null
     var city: String? = null
     var state: String? = null
+    var token: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        createCatalogPresenter = CreateCatalogPresenterImpl(this)
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
 
         checkPermissionForLocation(this)
         val bundle = intent.extras
         val dato = bundle!!.getString("userName")
-        val token = bundle!!.getString("token")
+        token = bundle!!.getString("token")
 
         Toast.makeText(this, "Bienvenido $dato", Toast.LENGTH_LONG).show()
 
         Log.e("Latitdu", latitud.toString())
+        initUI()
 
 
     }
@@ -45,6 +53,12 @@ class MainActivity : AppCompatActivity() {
     private fun initUI(){
         val text1 = findViewById<TextView>(R.id.ubicacion)
         text1.text = "$state $city"
+
+        val btnCreateCatalog = findViewById<Button>(R.id.btnCreate)
+
+        btnCreateCatalog.setOnClickListener {
+            createCatalogPresenter!!.createCatalog(token!!)
+        }
     }
 
     private val locationListener: LocationListener = object : LocationListener {
@@ -70,7 +84,6 @@ class MainActivity : AppCompatActivity() {
         )
         city = direccion[0].getLocality()
         state= direccion[0].getAdminArea()
-        initUI()
     }
 
     fun checkPermissionForLocation(context: Context): Boolean {
@@ -115,5 +128,13 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Permission Denied", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    override fun result(result: String?) {
+        Toast.makeText(this, "Login valido", Toast.LENGTH_LONG).show()
+    }
+
+    override fun invalidateOperation() {
+        Toast.makeText(this, "Login Invalido", Toast.LENGTH_LONG).show()
     }
 }

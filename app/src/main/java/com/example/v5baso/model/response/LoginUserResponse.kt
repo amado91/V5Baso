@@ -7,4 +7,6 @@ class LoginUserResponse(
     @Expose
     @SerializedName("token")
     val token: String
-)
+) {
+
+}

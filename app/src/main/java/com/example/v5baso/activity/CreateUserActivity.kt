@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.v5baso.R
 import com.example.v5baso.model.request.CreateUserRequest
 import com.example.v5baso.presenter.CreateUserPresenter
-import com.example.v5baso.presenter.UserPresenterImpl
+import com.example.v5baso.presenter.CreateUserPresenterImpl
 import com.example.v5baso.view.UserView
 
 
@@ -28,7 +28,7 @@ class CreateUserActivity : AppCompatActivity(), UserView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_user_activity)
-        userPresenter = UserPresenterImpl(this)
+        userPresenter = CreateUserPresenterImpl(this)
         val sh = getSharedPreferences(
             "MySharedPref",
             MODE_PRIVATE
