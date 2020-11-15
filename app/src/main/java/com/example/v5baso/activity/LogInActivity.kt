@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import android.widget.Toast.makeText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.v5baso.R
 import com.example.v5baso.model.request.LoginUserRequest
@@ -13,6 +14,7 @@ import com.example.v5baso.presenter.LoginUserPresenter
 import com.example.v5baso.presenter.LoginUserPresenterImpl
 import com.example.v5baso.view.UserView
 import com.google.gson.Gson
+import org.apache.commons.codec.binary.Base64
 
 class LogInActivity : AppCompatActivity(), UserView {
 
@@ -52,26 +54,32 @@ class LogInActivity : AppCompatActivity(), UserView {
                     )
                 )
             } else {
-                Toast.makeText(this, "Llena todos los campos", Toast.LENGTH_LONG).show()
+                makeText(this, "Llena todos los campos", Toast.LENGTH_LONG).show()
             }
         }
     }
 
     override fun result(result: String?) {
-        Toast.makeText(this, result, Toast.LENGTH_LONG).show()
-        val json = result
+        val split_string: List<String> = result!!.split(".")
+
+        val base64EncodedHeader = split_string[0]
+        val responseBody = split_string[1]
+        val base64EncodedSignature = split_string[2]
+        val base64Url = Base64(true)
+        val body = String(base64Url.decode(responseBody))
+        println("JWT Body : $body")
         val gson = Gson()
 
-        val response: BodyUserResponse = gson.fromJson(json, BodyUserResponse::class.java)
-
-        Log.e("Body", response.id)
+        val response: BodyUserResponse = gson.fromJson(body, BodyUserResponse::class.java)
         progressBar.visibility = View.INVISIBLE
         val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("userName",response.firstname+" "+response.lastname)
+        intent.putExtra("token", result)
         startActivity(intent)
     }
 
     override fun invalidateOperation() {
         progressBar.visibility = View.INVISIBLE
-        Toast.makeText(this, "Login Invalido", Toast.LENGTH_LONG).show()
+        makeText(this, "Login Invalido", Toast.LENGTH_LONG).show()
     }
 }

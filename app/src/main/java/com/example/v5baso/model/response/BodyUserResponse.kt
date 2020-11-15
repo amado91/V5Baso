@@ -12,10 +12,10 @@ class BodyUserResponse(
     val email: String,
     @Expose
     @SerializedName("firstname")
-    val lastname: String,
+    val firstname: String,
     @Expose
     @SerializedName("lastname")
-    val password: String,
+    val lastname: String,
     @Expose
     @SerializedName("iat")
     val iat: Int,

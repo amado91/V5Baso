@@ -27,14 +27,7 @@ class LoginUserInteractorImpl(loginUserPresenter: LoginUserPresenter) : LoginUse
 
     private fun onResponse(response: LoginUserResponse) {
 
-        val split_string: List<String> = response.token.split(".")
-        val base64EncodedHeader = split_string[0]
-        val base64EncodedBody = split_string[1]
-        val base64EncodedSignature = split_string[2]
-        val base64Url = Base64(true)
-        val body = String(base64Url.decode(base64EncodedBody))
-        println("JWT Body : $body")
-        presenter!!.showResult(body)
+        presenter!!.showResult(response.token)
     }
 
     private fun onFailure(response: Any) {
