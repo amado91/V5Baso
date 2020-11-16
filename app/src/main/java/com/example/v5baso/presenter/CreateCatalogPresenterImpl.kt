@@ -36,4 +36,11 @@ class CreateCatalogPresenterImpl(view: UserView) : CreateCatalogPresenter {
         }
     }
 
+    override fun createCard(tokenString: String) {
+        interactor = CreateCatalogInteractorImpl(this)
+        if (view != null){
+            interactor!!.getCardInteractor(tokenString)
+        }
+    }
+
 }

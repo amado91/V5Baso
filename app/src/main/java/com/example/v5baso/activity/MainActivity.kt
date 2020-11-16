@@ -9,9 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.v5baso.R
@@ -24,7 +22,7 @@ import java.util.*
 class MainActivity : AppCompatActivity(), UserView {
 
     var createCatalogPresenter: CreateCatalogPresenter? = null
-    private var locationManager : LocationManager? = null
+    private var locationManager: LocationManager? = null
     lateinit var btnCreate: Button
     lateinit var btnCards: Button
     private var latitud: Double? = null
@@ -32,6 +30,9 @@ class MainActivity : AppCompatActivity(), UserView {
     var city: String? = null
     var state: String? = null
     var token: String? = null
+    lateinit var progressBar: ProgressBar
+    private lateinit var TDD: TextView
+    private lateinit var TDC: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,19 +54,33 @@ class MainActivity : AppCompatActivity(), UserView {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun initUI(){
+    private fun initUI() {
+        progressBar = findViewById(R.id.progress_circular)
         val text1 = findViewById<TextView>(R.id.ubicacion)
         text1.text = "$state $city"
 
         btnCreate = findViewById(R.id.btnCreate)
         btnCards = findViewById(R.id.btnCards)
+        TDD = findViewById(R.id.txtTDD)
+        TDC = findViewById(R.id.txtTDC)
 
         btnCreate.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
             createCatalogPresenter!!.createCatalog(token!!)
         }
 
         btnCards.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
             createCatalogPresenter!!.consultCard(token!!)
+        }
+
+        TDD.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
+            createCatalogPresenter!!.createCard(token!!)
+        }
+        TDC.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
+            createCatalogPresenter!!.createCard(token!!)
         }
     }
 
@@ -76,12 +91,13 @@ class MainActivity : AppCompatActivity(), UserView {
 
             getLocation(location)
         }
+
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
         override fun onProviderEnabled(provider: String) {}
         override fun onProviderDisabled(provider: String) {}
     }
 
-    fun getLocation(location: Location){
+    fun getLocation(location: Location) {
         val direccion: List<Address>
         val geocoder = Geocoder(this, Locale.getDefault())
 
@@ -91,14 +107,15 @@ class MainActivity : AppCompatActivity(), UserView {
             1
         )
         city = direccion[0].getLocality()
-        state= direccion[0].getAdminArea()
+        state = direccion[0].getAdminArea()
     }
 
     fun checkPermissionForLocation(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED) {
+                PackageManager.PERMISSION_GRANTED
+            ) {
                 true
             } else {
                 // Show the permission request
@@ -140,8 +157,10 @@ class MainActivity : AppCompatActivity(), UserView {
 
     override fun result(result: String?) {
         Toast.makeText(this, "Se créo la cuenta", Toast.LENGTH_LONG).show()
+        progressBar.visibility = View.GONE
         btnCreate.visibility = View.INVISIBLE
         btnCards.visibility = View.VISIBLE
+
 
     }
 

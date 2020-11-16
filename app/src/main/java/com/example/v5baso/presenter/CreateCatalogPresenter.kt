@@ -5,4 +5,5 @@ interface CreateCatalogPresenter {
     fun invalidOperation()
     fun createCatalog(tokenString: String)
     fun consultCard(tokenString: String)
+    fun createCard(tokenString: String)
 }

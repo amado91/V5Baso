@@ -24,4 +24,7 @@ interface WebService {
 
     @GET("cards")
     fun getCard(@Header("x-access-token") token: String): Observable<CardCatalogResponse>
+
+    @GET("cards")
+    fun getCardNew(@Header("x-access-token") token: String): Observable<CreateUserResponse>
 }
