@@ -1,6 +1,7 @@
 package com.example.v5baso.interactor
 
 import android.util.Log
+import com.example.v5baso.model.response.CardCatalogResponse
 import com.example.v5baso.model.response.CreateCatalogResponse
 import com.example.v5baso.presenter.CreateCatalogPresenter
 import com.example.v5baso.service.RetrofitClient
@@ -26,16 +27,16 @@ class CreateCatalogInteractorImpl(createCatalogPresenter: CreateCatalogPresenter
     override fun getCardInteractor(tokenString: String) {
         val compositeDisposable = CompositeDisposable()
         compositeDisposable.add(
-            RetrofitClient.buildService2()
-                .getCatalog(tokenString)
+            RetrofitClient.buildService3()
+                .getCard(tokenString)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({ response -> onResponseCard(response) }, { t -> onFailureCard(t) })
         )
     }
 
-    private fun onResponseCard(response: CreateCatalogResponse) {
-        Log.e("Response", response.toString())
+    private fun onResponseCard(response: CardCatalogResponse) {
+        Log.e("Card", response.response._id)
         presenter!!.showResult(response.toString())
     }
 

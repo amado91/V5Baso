@@ -63,6 +63,10 @@ class MainActivity : AppCompatActivity(), UserView {
         btnCreate.setOnClickListener {
             createCatalogPresenter!!.createCatalog(token!!)
         }
+
+        btnCards.setOnClickListener {
+            createCatalogPresenter!!.consultCard(token!!)
+        }
     }
 
     private val locationListener: LocationListener = object : LocationListener {

@@ -32,7 +32,7 @@ class CreateCatalogPresenterImpl(view: UserView) : CreateCatalogPresenter {
     override fun consultCard(tokenString: String) {
         interactor = CreateCatalogInteractorImpl(this)
         if (view != null){
-            interactor!!.getCatalogInteractor(tokenString)
+            interactor!!.getCardInteractor(tokenString)
         }
     }
 

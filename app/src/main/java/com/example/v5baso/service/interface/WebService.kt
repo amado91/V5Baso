@@ -2,6 +2,7 @@ package com.example.v5baso.service.`interface`
 
 import com.example.v5baso.model.request.CreateUserRequest
 import com.example.v5baso.model.request.LoginUserRequest
+import com.example.v5baso.model.response.CardCatalogResponse
 import com.example.v5baso.model.response.CreateCatalogResponse
 import com.example.v5baso.model.response.CreateUserResponse
 import com.example.v5baso.model.response.LoginUserResponse
@@ -21,6 +22,6 @@ interface WebService {
 
     fun getCatalog(@Header("x-access-token")token: String): Observable<CreateCatalogResponse>
 
-    @GET("accounts")
-    fun fetchPosts(@Header("token") token: String): Observable<CreateCatalogResponse>
+    @GET("cards")
+    fun getCard(@Header("x-access-token") token: String): Observable<CardCatalogResponse>
 }
