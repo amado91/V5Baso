@@ -8,6 +8,7 @@ import android.location.*
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity(), UserView {
 
     var createCatalogPresenter: CreateCatalogPresenter? = null
     private var locationManager : LocationManager? = null
+    lateinit var btnCreate: Button
+    lateinit var btnCards: Button
     private var latitud: Double? = null
     private var longitud: Double? = null
     var city: String? = null
@@ -54,9 +57,10 @@ class MainActivity : AppCompatActivity(), UserView {
         val text1 = findViewById<TextView>(R.id.ubicacion)
         text1.text = "$state $city"
 
-        val btnCreateCatalog = findViewById<Button>(R.id.btnCreate)
+        btnCreate = findViewById(R.id.btnCreate)
+        btnCards = findViewById(R.id.btnCards)
 
-        btnCreateCatalog.setOnClickListener {
+        btnCreate.setOnClickListener {
             createCatalogPresenter!!.createCatalog(token!!)
         }
     }
@@ -131,10 +135,13 @@ class MainActivity : AppCompatActivity(), UserView {
     }
 
     override fun result(result: String?) {
-        Toast.makeText(this, "Login valido", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Se créo la cuenta", Toast.LENGTH_LONG).show()
+        btnCreate.visibility = View.INVISIBLE
+        btnCards.visibility = View.VISIBLE
+
     }
 
     override fun invalidateOperation() {
-        Toast.makeText(this, "Login Invalido", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()
     }
 }
