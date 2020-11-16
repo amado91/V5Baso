@@ -1,5 +1,6 @@
 package com.example.v5baso.service.`interface`
 
+import com.example.v5baso.model.request.CreateCardRequest
 import com.example.v5baso.model.request.CreateUserRequest
 import com.example.v5baso.model.request.LoginUserRequest
 import com.example.v5baso.model.response.CardCatalogResponse
@@ -7,7 +8,10 @@ import com.example.v5baso.model.response.CreateCatalogResponse
 import com.example.v5baso.model.response.CreateUserResponse
 import com.example.v5baso.model.response.LoginUserResponse
 import io.reactivex.Observable
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.POST
 
 
 interface WebService {
@@ -19,12 +23,11 @@ interface WebService {
     fun loginUser(@Body login: LoginUserRequest): Observable<LoginUserResponse>
 
     @GET("accounts")
-
-    fun getCatalog(@Header("x-access-token")token: String): Observable<CreateCatalogResponse>
+    fun getCatalog(@Header("x-access-token") token: String): Observable<CreateCatalogResponse>
 
     @GET("cards")
     fun getCard(@Header("x-access-token") token: String): Observable<CardCatalogResponse>
 
-    @GET("cards")
-    fun getCardNew(@Header("x-access-token") token: String): Observable<CreateUserResponse>
+    @POST("accounts")
+    fun getCardNew(@Body request: CreateCardRequest, @Header("x-access-token") token: String): Observable<CreateUserResponse>
 }

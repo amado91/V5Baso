@@ -2,7 +2,7 @@ package com.example.v5baso.presenter
 
 import com.example.v5baso.interactor.CreateCatalogInteractor
 import com.example.v5baso.interactor.CreateCatalogInteractorImpl
-import com.example.v5baso.model.request.CreateUserRequest
+import com.example.v5baso.model.request.CreateCardRequest
 import com.example.v5baso.view.UserView
 
 class CreateCatalogPresenterImpl(view: UserView) : CreateCatalogPresenter {
@@ -36,10 +36,10 @@ class CreateCatalogPresenterImpl(view: UserView) : CreateCatalogPresenter {
         }
     }
 
-    override fun createCard(tokenString: String) {
+    override fun createCard(request: CreateCardRequest, tokenString: String) {
         interactor = CreateCatalogInteractorImpl(this)
         if (view != null){
-            interactor!!.getCardInteractor(tokenString)
+            interactor!!.createCardInteractor(request, tokenString)
         }
     }
 

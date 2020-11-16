@@ -13,7 +13,7 @@ object RetrofitClient {
     var BASE_URL = "https://mighty-refuge-81707.herokuapp.com/api/auth/user/"
     var BASER_URL_CATALG = "https://mighty-refuge-81707.herokuapp.com/api/"
     var BASER_URL_CARD = "https://mighty-refuge-81707.herokuapp.com/api/catalogs/"
-    var BASE_URL_NEW_CARD = "https://mighty-refuge-81707.herokuapp.com/api/accounts"
+    var BASE_URL_NEW_CARD = "https://mighty-refuge-81707.herokuapp.com/api/"
 
     private val clientToken = OkHttpClient
         .Builder()

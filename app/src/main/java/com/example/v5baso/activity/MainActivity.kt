@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.v5baso.R
+import com.example.v5baso.model.request.CreateCardRequest
 import com.example.v5baso.presenter.CreateCatalogPresenter
 import com.example.v5baso.presenter.CreateCatalogPresenterImpl
 import com.example.v5baso.view.UserView
@@ -33,6 +34,8 @@ class MainActivity : AppCompatActivity(), UserView {
     lateinit var progressBar: ProgressBar
     private lateinit var TDD: TextView
     private lateinit var TDC: TextView
+    private lateinit var title: TextView
+    private var id: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +66,7 @@ class MainActivity : AppCompatActivity(), UserView {
         btnCards = findViewById(R.id.btnCards)
         TDD = findViewById(R.id.txtTDD)
         TDC = findViewById(R.id.txtTDC)
+        title = findViewById(R.id.textView)
 
         btnCreate.setOnClickListener {
             progressBar.visibility = View.VISIBLE
@@ -76,11 +80,11 @@ class MainActivity : AppCompatActivity(), UserView {
 
         TDD.setOnClickListener {
             progressBar.visibility = View.VISIBLE
-            createCatalogPresenter!!.createCard(token!!)
+            createCatalogPresenter!!.createCard(CreateCardRequest(id!!,"TDD", "Tarjeta de Debito"), token!!)
         }
         TDC.setOnClickListener {
             progressBar.visibility = View.VISIBLE
-            createCatalogPresenter!!.createCard(token!!)
+            createCatalogPresenter!!.createCard(CreateCardRequest(id!!,"TDC", "Tarjeta de Oro"), token!!)
         }
     }
 
@@ -156,10 +160,19 @@ class MainActivity : AppCompatActivity(), UserView {
     }
 
     override fun result(result: String?) {
+        val _id = result
+        Log.e("length", _id!!.length.toString())
+        if (_id!!.length == 24){
+            id = _id
+            title.visibility = View.VISIBLE
+            TDD.text = " click si quieres una TDC"
+            TDC.text = "click si quieres una TDD"
+        }
         Toast.makeText(this, "Se créo la cuenta", Toast.LENGTH_LONG).show()
         progressBar.visibility = View.GONE
         btnCreate.visibility = View.INVISIBLE
         btnCards.visibility = View.VISIBLE
+
 
 
     }
